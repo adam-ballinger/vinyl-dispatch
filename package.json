@@ -1,0 +1,20 @@
+{
+  "name": "vinyl-dispatch",
+  "version": "1.0.0",
+  "description": "Automate common dispatch functions",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo this is a test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/adam-ballinger/vinyl-dispatch.git"
+  },
+  "author": "Adam Ballinger",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/adam-ballinger/vinyl-dispatch/issues"
+  },
+  "homepage": "https://github.com/adam-ballinger/vinyl-dispatch#readme"
+}
