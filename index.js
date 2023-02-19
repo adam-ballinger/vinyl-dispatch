@@ -20,15 +20,6 @@ const database = require('./database.js')
 const vinyl = require('./vinyl.js')
 const data = require('./data.js')
 
-// Initiate requests to new dispatch file and and yesterdays's dispatch jobs from database.
-// These will be compared to report dispatch changes from previouse day.
-dispatch_request = vinyl.requestDispatch('files/Dispatch.xlsx')
-database_request = database.requestJobs({'dispatch': true})
 
 
-Promise.all([dispatch_request, database_request]).then((responses) => {
-    let dispatch = responses[0]
-    let database = responses[1]
-    console.log(data.filterData(dispatch, {'_id': '2266106'}))
-    console.log(data.filterData(database, {'_id': '2266106'}))
-})
+vinyl.updateDispatch('./files/Dispatch.xlsx')

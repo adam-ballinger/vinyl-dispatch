@@ -78,10 +78,19 @@ function getCurrentJobs() {
 // -If jobs are new, new job is uploaded.
 // -If jobs are no longer on dispatch, they are marked current=false in the database.
 function updateDispatch(loc) {
-    let current_dispatch = readDispatch(loc, sheet_name=null)
-    let previous_dispatch = {}
+
+    // Initiate requests to new dispatch file and and yesterdays's dispatch jobs from database.
+    // These will be compared to report dispatch changes from previouse day.
+    dispatch_request = requestDispatch(loc)
+    database_request = database.requestJobs({'dispatch': true})
+
+
+    Promise.all([dispatch_request, database_request]).then((responses) => {
+        let dispatch = responses[0]
+        let database = responses[1]
+        console.log(data.filterData(dispatch, {'_id': '2266106'}))
+        console.log(data.filterData(database, {'_id': '2266106'}))
+    })
 }
 
-
-
-module.exports = {filterVinylJobs, requestDispatch, getLateJobs, getCurrentJobs};
+module.exports = {filterVinylJobs, requestDispatch, getLateJobs, getCurrentJobs, updateDispatch};
