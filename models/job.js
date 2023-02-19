@@ -52,10 +52,6 @@ const jobSchema = new mongoose.Schema({
     die: {
         type: String,
         required: false
-    },
-    dispatch: {
-        type: Boolean,
-        required: true
     }
 });
 

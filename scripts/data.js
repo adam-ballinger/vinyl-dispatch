@@ -35,4 +35,12 @@ function filterData(data, filter) {
     return result
 }
 
-module.exports = {requestFile, filterData};
+function getById(data, id) {
+    for(let i = 0; i < data.length; i++) {
+        if(data[i]._id == id) {
+            return data[i]
+        }
+    }
+}
+
+module.exports = {requestFile, filterData, getById};

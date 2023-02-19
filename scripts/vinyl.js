@@ -2,8 +2,9 @@
  * Vinyl specific tools for scheduling.
  */
 
+// Require local modules.
 const data = require('./data.js');
-const Job = require('./models/job.js');
+const Job = require('../models/job.js');
 const database = require('./database.js');
 
 
@@ -62,35 +63,34 @@ function getLateJobs(jobs_data) {
     return result
 }
 
-// Used to get all current jobs from database.
-function getCurrentJobs() {
-    try {
-        const jobs = Job.find({"current": true});
-        return jobs;
-    } catch(err) {
-        console.log('Error' + err);
-    }
-}
-
 // Upload data from a new dispatch file to replace the previous day's data.
 // All current jobs are pulled in from database and checked against incoming jobs.
-// -If the jobs persist, the data is updated.
-// -If jobs are new, new job is uploaded.
-// -If jobs are no longer on dispatch, they are marked current=false in the database.
+// -Yesterday's jobs are deleted from the database.
+// -Today's jobs are uploaded.
 function updateDispatch(loc) {
 
     // Initiate requests to new dispatch file and and yesterdays's dispatch jobs from database.
     // These will be compared to report dispatch changes from previouse day.
-    dispatch_request = requestDispatch(loc)
-    database_request = database.requestJobs({'dispatch': true})
+    dispatch_request = requestDispatch(loc);
+    database_request = database.requestJobs({'dispatch': true});
 
 
     Promise.all([dispatch_request, database_request]).then((responses) => {
-        let dispatch = responses[0]
-        let database = responses[1]
-        console.log(data.filterData(dispatch, {'_id': '2266106'}))
-        console.log(data.filterData(database, {'_id': '2266106'}))
-    })
+        let dispatch_jobs = filterVinylJobs(responses[0]);
+        let database_jobs = responses[1];
+        
+        // First delete the previous day's jobs from the database, then upload the new jobs.
+        database.deleteJobs({}).then((response) => {
+            
+        console.log({'message': 'Deleted jobs.', 'response': response})
+        database.uploadJobs(dispatch_jobs).then((response) => {
+            
+        console.log({'message': 'Uploaded jobs.', 'response': response})
+        
+        });
+        });
+
+    });
 }
 
-module.exports = {filterVinylJobs, requestDispatch, getLateJobs, getCurrentJobs, updateDispatch};
+module.exports = {filterVinylJobs, requestDispatch, getLateJobs, updateDispatch};
