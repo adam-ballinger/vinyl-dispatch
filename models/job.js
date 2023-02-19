@@ -9,6 +9,10 @@ const jobSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    dept: {
+        type: String,
+        required: true
+    },
     item: {
         type: String,
         required: true
@@ -48,6 +52,10 @@ const jobSchema = new mongoose.Schema({
     die: {
         type: String,
         required: false
+    },
+    dispatch: {
+        type: Boolean,
+        required: true
     }
 });
 
