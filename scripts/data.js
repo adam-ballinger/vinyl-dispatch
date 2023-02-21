@@ -14,7 +14,7 @@ function requestFile(loc, sheet_name=null, params={'cellDates': true}) {
             if(sheet_name === null) {
                 sheet_name = file.SheetNames[0];
             }
-            resolve(reader.utils.sheet_to_json(file.Sheets[file.SheetNames[0]]));
+            resolve(reader.utils.sheet_to_json(file.Sheets[sheet_name]));
         } catch(error) {
             reject(error)
         }
@@ -35,12 +35,34 @@ function filterData(data, filter) {
     return result
 }
 
+// Get an object by '_id' property.
 function getById(data, id) {
     for(let i = 0; i < data.length; i++) {
         if(data[i]._id == id) {
             return data[i]
         }
     }
+    return false
 }
 
-module.exports = {requestFile, filterData, getById};
+// Sum all values of a property in an array.
+function sumProperty(data, property) {
+    result = 0;
+    for(let i = 0; i < data.length; i++) {
+        result += data[i][property];
+    }
+    return result;
+}
+
+// Get a list of objects by a date property.
+function getByDateProperty(data, property, date) {
+    result = [];
+    for(let i = 0; i < data.length; i++) {
+        if(data[i][property].getTime() == date.getTime() ) {
+            result.push(data[i]);
+        }
+    }
+    return result;
+}
+
+module.exports = {requestFile, filterData, getById, sumProperty, getByDateProperty};
