@@ -4,6 +4,7 @@
 
 const Job = require('../models/job.js');
 const Resource = require('../models/resource.js');
+const Item = require('../models/item.js');
 
 // Used to upload jobs directly from the server without a router.
 function uploadJob(data) {
@@ -93,4 +94,30 @@ async function uploadResources(resources, callback) {
     })
 }
 
-module.exports = {uploadJob, requestJobs, deleteJobs, uploadJobs, uploadResource, uploadResources}
+async function uploadItem(data, callback) {
+    const item = new Item({
+        _id: data._id,
+        description: data.description
+    });
+    const save = item.save((err, res) => {
+        if (err) { callback({'message': 'There was an error.', 'err': err, 'data': data}); }
+        else { callback({'message': 'Upload was successful.', 'res': res, 'save': save}); }
+    })
+}
+
+async function uploadItems(items, callback) {
+    let promises = [];
+    for(let i = 0; i < items.length; i++) {
+        promises.push(new Promise((resolve, reject) => {
+            uploadItem(items[i], (response) => {
+                if(response.err) { reject(response); }
+                else { resolve(response); }
+            })
+        }))
+    }
+    Promise.all(promises).then((responses) => {
+        callback({'message': 'Items uploaded successfully.', 'uploadCount': responses.length})
+    })
+}
+
+module.exports = {uploadJob, requestJobs, deleteJobs, uploadJobs, uploadResource, uploadResources, uploadItem, uploadItems}

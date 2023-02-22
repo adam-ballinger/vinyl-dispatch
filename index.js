@@ -20,10 +20,15 @@ mongoose.connect(uri, (err)=> {
 });
 
 // Require local modules
-const database = require('./scripts/database.js')
-const vinyl = require('./scripts/vinyl.js')
-const data = require('./scripts/data.js')
-
+const database = require('./scripts/database.js');
+const vinyl = require('./scripts/vinyl.js');
+const data = require('./scripts/data.js');
 
 // Main tasks:
-vinyl.updateDispatch('./files/Dispatch.xlsx')
+// vinyl.updateDispatch('./files/Dispatch.xlsx')
+
+vinyl.requestItems('./files/Dispatch.xlsx', 'Items', (requestResponse) => {
+    database.uploadItems(requestResponse, (uploadResponse) => {
+        console.log(uploadResponse);
+    });
+});

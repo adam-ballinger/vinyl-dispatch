@@ -7,7 +7,6 @@ const data = require('./data.js');
 const Job = require('../models/job.js');
 const database = require('./database.js');
 
-
 // Used to read a dispatch xlsx file and return as JSON with some data formatting.
 function requestDispatch(loc, sheet_name=null) {
     
@@ -32,6 +31,19 @@ function requestDispatch(loc, sheet_name=null) {
 
 // Request resources from xlsx
 async function requestResources(loc, sheet_name='Resources', callback) {
+    data.requestFile(loc, sheet_name).then((response) => {
+        result = response;
+        for(let i = 0; i < result.length; i++) {
+            if(!isNaN(result[i]._id)) {
+                result[i]._id = result[i]._id.toString()
+            }
+        }
+        callback(result)
+    })
+}
+
+// Request resources from xlsx
+async function requestItems(loc, sheet_name='Items', callback) {
     data.requestFile(loc, sheet_name).then((response) => {
         result = response;
         for(let i = 0; i < result.length; i++) {
@@ -181,4 +193,11 @@ function updateDispatch(loc) {
     });
 }
 
-module.exports = {filterVinylJobs, requestDispatch, getLateJobs, updateDispatch, requestResources};
+module.exports = {
+    filterVinylJobs,
+    requestDispatch,
+    getLateJobs,
+    updateDispatch,
+    requestResources,
+    requestItems
+};
