@@ -25,8 +25,4 @@ const vinyl = require('./scripts/vinyl.js');
 const data = require('./scripts/data.js');
 
 // Main tasks:
-// vinyl.updateDispatch('./files/Dispatch.xlsx')
-
-database.requestJobs({}).then((response) => {
-    console.log({'response[0]': response[0], 'summary': vinyl.summarizeJob(response[0])})
-})
+vinyl.dailyUpdate('./files/Dispatch.xlsx');

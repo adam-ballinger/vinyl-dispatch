@@ -116,8 +116,15 @@ async function uploadItems(items, callback) {
         }))
     }
     Promise.all(promises).then((responses) => {
-        callback({'message': 'Items uploaded successfully.', 'uploadCount': responses.length})
+        callback({'message': 'Items uploaded successfully.', 'uploadCount': responses.length});
     })
 }
 
-module.exports = {uploadJob, requestJobs, deleteJobs, uploadJobs, uploadResource, uploadResources, uploadItem, uploadItems}
+function requestItems(filter, callback) {
+    Item.find(filter, (err, res) => {
+        callback({err, res});
+    });
+}
+
+
+module.exports = {uploadJob, requestJobs, deleteJobs, uploadJobs, uploadResource, uploadResources, uploadItem, uploadItems, requestItems};
