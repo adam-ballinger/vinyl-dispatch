@@ -193,11 +193,22 @@ function updateDispatch(loc) {
     });
 }
 
+// Summarize a job with just a few properties
+function summarizeJob(data) {
+    result = {};
+    summary = ['_id', 'item', 'resource', 'hours', 'completionDate'];
+    for(let i = 0; i < summary.length; i++) {
+        result[summary[i]] = data[summary[i]]
+    }
+    return result
+}
+
 module.exports = {
     filterVinylJobs,
     requestDispatch,
     getLateJobs,
     updateDispatch,
     requestResources,
-    requestItems
+    requestItems,
+    summarizeJob
 };

@@ -27,8 +27,6 @@ const data = require('./scripts/data.js');
 // Main tasks:
 // vinyl.updateDispatch('./files/Dispatch.xlsx')
 
-vinyl.requestItems('./files/Dispatch.xlsx', 'Items', (requestResponse) => {
-    database.uploadItems(requestResponse, (uploadResponse) => {
-        console.log(uploadResponse);
-    });
-});
+database.requestJobs({}).then((response) => {
+    console.log({'response[0]': response[0], 'summary': vinyl.summarizeJob(response[0])})
+})
