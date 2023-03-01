@@ -120,9 +120,9 @@ function dailyUpdate(loc) {
         
         // First delete the previous day's jobs from the database, then upload the new jobs.
         database.deleteJobs({}).then((response) => {
-            console.log({'message': 'Succesfully deleted old dispatch.', 'response': response});
+            console.log({'message': 'Successfully deleted old dispatch.', 'response': response});
             database.uploadJobs(dispatch_jobs).then((response) => {
-                console.log({'message': 'Succesfully uploaded new dispatch.', 'response': response});
+                console.log({'message': 'Successfully uploaded new dispatch.', 'response': response});
             });
 
             // Determine if there are any new items on the dispatch that are not in the database.
